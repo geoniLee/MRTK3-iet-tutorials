@@ -17,71 +17,43 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject treasureChest;
     [SerializeField] private GameObject tubeCoral;
     [SerializeField] Transform parent;
+    private Dictionary<string, GameObject> prefabMap;
+    public List<GameObject> clonePrefabs = new List<GameObject>();
 
-    public void SpawnBoat()
-    {
-        Vector3 position = new Vector3(-.2f, 1.6f, .7f);
-        Instantiate(boat, position, Quaternion.Euler(0, 180,0), parent);
-    }
-    public void SpawnCoral()
-    {
-        Vector3 position = new Vector3(.19f, 1.6f, .7f);
-        Instantiate(coral, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnDarkPurpleSeaGrass()
-    {
-        Vector3 position = new Vector3(-.24f, 1.6f, .7f);
-        Instantiate(darkPurpleSeaGrass, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnGreenSeaGrass()
-    {
-        Vector3 position = new Vector3(0.15f, 1.6f, .7f);
-        Instantiate(greenSeaGrass, position, Quaternion.Euler(0, 180, 0), parent);
+    // 프리팹을 사전 형태로 초기화합니다.
+    private void Awake() {
+        prefabMap = new Dictionary<string, GameObject>
+        {
+            { "Boat", boat },
+            { "Coral", coral },
+            { "Dark Purple Sea Grass", darkPurpleSeaGrass },
+            { "Green Sea Grass", greenSeaGrass },
+            { "Light Purple Sea Grass", lightPurpleSeaGrass },
+            { "Rock-Large", largeRock },
+            { "Rock-Medium", mediumRock },
+            { "Rock-Small", smallRock },
+            { "Treasure Chest", treasureChest },
+            { "Tube Coral", tubeCoral }
+        };
     }
 
-    public void SpawnLightPurpleSeaGrass()
+    // 이 메서드는 prefabName에 해당하는 프리팹을 생성하고, 지정된 위치에 배치합니다.
+    public void SpawnPrefab(string prefabName)
     {
-        Vector3 position = new Vector3(.19f, 1.6f, .7f);
-        Instantiate(lightPurpleSeaGrass, position, Quaternion.Euler(0, 180, 0), parent);
+        Vector3 position = new Vector3(0, 1.6f, .7f); // 기본 위치
+        GameObject prefab = prefabMap[prefabName];
+        GameObject clone = Instantiate(prefab, position, Quaternion.Euler(0, 180, 0), parent);
+        clonePrefabs.Add(clone);
     }
 
-    public void SpawnLargeRock()
-    {
-        Vector3 position = new Vector3(.23f, 1.6f, .7f);
-        Instantiate(largeRock, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnMediumRock()
-    {
-        Vector3 position = new Vector3(.26f, 1.6f, .85f);
-        Instantiate(mediumRock, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnSmallRock()
-    {
-        Vector3 position = new Vector3(.23f, 1.6f, .85f);
-        Instantiate(smallRock, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnTreasureChest()
-    {
-        Vector3 position = new Vector3(0, 1.6f, .78f);
-        Instantiate(treasureChest, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void SpawnTubeCoral()
-    {
-        Vector3 position = new Vector3(.14f, 1.6f, .7f);
-        Instantiate(tubeCoral, position, Quaternion.Euler(0, 180, 0), parent);
-    }
-
-    public void ClearSpawnObjects(string objectName){
-        // 모든 자식 오브젝트를 순회하며 이름에 objectName이 포함된 오브젝트를 찾아 제거합니다.        
-        foreach(Transform child in parent){
-            if(child.gameObject.name==objectName){
-                Destroy(child.gameObject);
+    // 이 메서드는 clonePrefabs 리스트에서 이름에 objectName이 포함된 오브젝트를 찾아 제거합니다.
+    public void destroySpawnedobject(string objectName){
+        for (int i = clonePrefabs.Count - 1; i >= 0; i--)
+        {
+            if (clonePrefabs[i].name.StartsWith(objectName + "(Clone)"))
+            {
+                Destroy(clonePrefabs[i]);
+                clonePrefabs.RemoveAt(i);
             }
         }
     }
