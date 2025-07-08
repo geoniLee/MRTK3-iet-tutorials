@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
         };
     }
 
-    // 이 메서드는 prefabName에 해당하는 프리팹을 생성하고, 지정된 위치에 배치합니다.
+    // prefabName에 해당하는 프리팹을 생성하고, 지정된 위치에 배치합니다.
     public void SpawnPrefab(string prefabName)
     {
         Vector3 position = new Vector3(0, 1.6f, .7f); // 기본 위치
@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour
         clonePrefabs.Add(clone);
     }
 
-    // 이 메서드는 clonePrefabs 리스트에서 이름에 objectName이 포함된 오브젝트를 찾아 제거합니다.
+    // clonePrefabs 리스트에서 이름에 objectName이 포함된 오브젝트를 찾아 제거합니다.
     public void destroySpawnedobject(string objectName){
         for (int i = clonePrefabs.Count - 1; i >= 0; i--)
         {

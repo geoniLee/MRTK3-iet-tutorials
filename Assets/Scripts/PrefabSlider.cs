@@ -34,7 +34,6 @@ public class PrefabSlider : MonoBehaviour
         if(current != null && current.name.Contains("(Clone)")&& current != lastInteractedPrefab)
         {
             lastInteractedPrefab = current;
-            Debug.Log("Current Prefab: " + current.name);
             scaleSlider.Value = current.transform.localScale.x/2;
         }
 
